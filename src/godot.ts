@@ -53,7 +53,9 @@ async function exportBuilds(): Promise<BuildResult[]> {
   core.endGroup();
 
   if (PROJECT_VERSION) {
-    await setProjectVersion();
+    core.startGroup('🔧 Adding Project Settings');
+    setProjectVersion();
+    core.endGroup();
   }
 
   if (WINE_PATH) {
@@ -449,6 +451,8 @@ function setProjectVersion(): void {
   fs.writeFileSync(projectFilePath, output.join('\n'), { encoding: 'utf8' });
   if (PROJECT_VERSION) {
     core.info(`Set project version to ${PROJECT_VERSION}`);
+  } else {
+    core.warning(`No project version set.`);
   }
 }
 
